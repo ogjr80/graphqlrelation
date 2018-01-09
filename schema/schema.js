@@ -6,7 +6,8 @@ const {
   GraphQLString,
   GraphQLObjectType,
   GraphQLSchema,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } = graphql;
 
 const UserType = new GraphQLObjectType({
@@ -18,7 +19,6 @@ const UserType = new GraphQLObjectType({
       company: {
         type: CompanyType,
         resolve(parentValue, args){
-          console.log(parentValue, args);
           return axios.get(`http://localhost:3000/companies/${parentValue.companyId}`)
             .then(resp => resp.data);
         }
@@ -47,11 +47,18 @@ const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields:{
    user:  {
-     type: UserType,
+     type:UserType,
      args: {id: {type: GraphQLString}},
      resolve(parentValue, args){
       return axios.get(`http://localhost:3000/users/${args.id}`)
         .then(resp => resp.data);
+      }
+    },
+    users: {
+      type: new GraphQLList(UserType),
+      resolve(parentValue,args){
+        return axios.get(`http://localhost:3000/users`)
+          .then(resp => resp.data);
       }
     },
     company: {
@@ -65,7 +72,48 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+const mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addUsers: {
+      type: UserType,
+      args: {
+        firstname: {type: new GraphQLNonNull(GraphQLString)},
+        age: {type: new GraphQLNonNull(GraphQLString)},
+        companyId: {type: GraphQLString}
+      },
+      resolve(parentValue, {firstname, age, companyId}){
+        return axios.post(`http://localhost:3000/users`,{firstname, age, companyId})
+          .then(resp => resp.data);
+      }
+    },
+    deleteUser: {
+      type: UserType,
+      args: {id: {type: GraphQLString}},
+      resolve(parentValue, args){
+        return axios.delete(`http://localhost:3000/users/${args.id}`)
+          .then(resp => resp.data);
+
+      }
+    },
+    editUser: {
+      type: UserType,
+      args: {
+        id: {type: GraphQLString},
+        firstname: {type: GraphQLString},
+        age: {type: GraphQLString},
+        companyId: {type: GraphQLString}
+      },
+      resolve(parentValue, args){
+        return axios.patch(`http://localhost:3000/users/${args.id}`, {args})
+          .then(resp => resp.data);
+      }
+    }
+  }
+})
+
 
 module.exports = new GraphQLSchema({
-  query : RootQuery
+  query : RootQuery,
+  mutation
 });

@@ -1,13 +1,50 @@
 {
   "users": [
-    {"id": "1", "firstname": "Gideon Ogongo", "age": "30", "companyId": "10"},
-    {"id": "4", "firstname": "Lelo Ogongo", "age": "30", "companyId": "30" },
-    {"id": "2", "firstname": "Sarah Jones", "age": "20", "companyId":"20" },
-    {"id": "3", "firstname": "David Moore", "age": "40", "companyId": "20"}
+    {
+      "id": "4",
+      "firstname": "Lelo Ogongo",
+      "age": "30",
+      "companyId": "30"
+    },
+    {
+      "id": "2",
+      "firstname": "Sarah Jones",
+      "age": "20",
+      "companyId": "20"
+    },
+    {
+      "id": "3",
+      "firstname": "David Moore",
+      "age": "40",
+      "companyId": "20",
+      "args": {
+        "id": "3",
+        "firstname": "Giddy",
+        "age": "40"
+      }
+    },
+    {
+      "firstname": "Abigail",
+      "age": "3",
+      "companyId": "10",
+      "id": "WM62qv3"
+    }
   ],
   "companies": [
-    {"id": "10", "name": "Apple", "description": "Iphones"},
-    {"id": "20", "name": "Google", "description": "Search"},
-    {"id": "30", "name" : "Microsoft", "description": "software"}
+    {
+      "id": "10",
+      "name": "Apple",
+      "description": "Iphones"
+    },
+    {
+      "id": "20",
+      "name": "Google",
+      "description": "Search"
+    },
+    {
+      "id": "30",
+      "name": "Microsoft",
+      "description": "software"
+    }
   ]
 }
